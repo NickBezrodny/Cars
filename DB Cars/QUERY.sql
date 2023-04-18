@@ -1,0 +1,143 @@
+--1. Показать список всех автомобилей, отсортированных по мощности в порядке убывания.
+
+SELECT P.QUANTITY AS МОЩНОСТЬ, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+FROM CAR AS C
+LEFT JOIN [POWER] AS P
+ON C.ID_POWER=P.ID
+LEFT JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID
+ORDER BY P.QUANTITY DESC;
+
+--2. Показать список всех автомобилей и их владельцев.
+
+SELECT O.FIRST_NAME AS ИМЯ, O.LAST_NAME AS ФАМИЛИЯ, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+FROM CAR AS C
+LEFT JOIN [OWNER] AS O
+ON C.ID_OWNER=O.ID
+LEFT JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID;
+
+--3. Показать три самых популярных марки автомобилей.
+
+SELECT TOP 3 B.[NAME] AS МАРКА, COUNT(C.ID) AS КОЛИЧЕСТВО
+FROM CAR AS C
+INNER JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID
+GROUP BY B.[NAME] 
+ORDER BY COUNT(C.ID) DESC;
+
+--4. Показать владельцев и количество их автомобилей.
+
+SELECT O.LAST_NAME AS ФАМИЛИЯ, O.FIRST_NAME AS ИМЯ, COUNT(C.ID) AS КОЛИЧЕСТВО
+FROM CAR AS C
+INNER JOIN [OWNER] AS O
+ON C.ID_OWNER=O.ID
+GROUP BY O.LAST_NAME, O.FIRST_NAME
+ORDER BY O.LAST_NAME ASC;
+
+--5. Какие автомобили были выпущены в 2021 году?
+
+SELECT B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ, C.DATE_RELEASE AS ДАТА_ВЫПУСКА
+FROM CAR AS C
+LEFT JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID
+WHERE C.DATE_RELEASE LIKE '%2021%';
+
+--6. Показать все автомобили и их параметры, сортируя их по дате выпуска.
+
+SELECT C.DATE_RELEASE AS ДАТА_ВЫПУСКА, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ, 
+	P.[QUANTITY] AS МОЩНОСТЬ, CL.[NAME] AS ЦВЕТ, CN.[NAME] AS СТРАНА_ПРОИЗВОДСТВА
+FROM CAR AS C
+LEFT JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID
+INNER JOIN COLOR AS CL
+ON C.ID_COLOR=CL.ID
+INNER JOIN COUNTRY AS CN
+ON C.ID_COUNTRY=CN.ID
+INNER JOIN [POWER] AS P
+ON C.ID_POWER=P.ID
+ORDER BY C.DATE_RELEASE DESC;
+
+--7. Показать все автомобили красного цвета с указанием марки и модели.
+
+SELECT B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+FROM CAR AS C
+LEFT JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID
+INNER JOIN COLOR AS CL
+ON C.ID_COLOR=CL.ID
+WHERE CL.[NAME]  ='Red';
+
+--8. Показать все автомобили с одинаковой мощностью.
+
+SELECT C.ID, P.QUANTITY AS МОЩНОСТЬ, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+FROM CAR AS C
+LEFT JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID
+INNER JOIN [POWER] AS P
+ON C.ID_POWER = P.ID
+WHERE P.QUANTITY = ANY
+  (
+    SELECT P.QUANTITY
+    FROM CAR AS C
+    INNER JOIN [POWER] AS P
+    ON P.ID = C.ID_POWER
+	GROUP BY P.QUANTITY
+	HAVING COUNT(C.ID)>1
+  );
+
+--9. Показать все автомобили синего цвета произведенные в Корее и Франции.
+
+SELECT B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ, CL.[NAME] AS ЦВЕТ, 
+	   CN.[NAME] AS СТРАНА_ПРОИЗВОДСТВА
+FROM CAR AS C
+LEFT JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID
+INNER JOIN COLOR AS CL
+ON C.ID_COLOR=CL.ID
+INNER JOIN COUNTRY AS CN
+ON C.ID_COUNTRY=CN.ID
+WHERE CL.[NAME]  ='Blue' AND (CN.[NAME] = 'France' OR CN.[NAME] = 'Korea');
+
+--10. Показать самую молодую машину и самую старую.
+
+SELECT C.ID, DATE_RELEASE AS ДАТА_ВЫПУСКА, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+FROM CAR AS C
+LEFT JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID
+WHERE DATE_RELEASE =
+(
+	SELECT MAX(DATE_RELEASE)
+	FROM CAR
+);
+
+SELECT C.ID, DATE_RELEASE AS ДАТА_ВЫПУСКА, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+FROM CAR AS C
+LEFT JOIN MODEL AS M
+ON C.ID_MODEL=M.ID
+LEFT JOIN BRAND AS B
+ON M.ID_BRAND=B.ID
+WHERE DATE_RELEASE =
+(
+	SELECT MIN(DATE_RELEASE)
+	FROM CAR
+);
+
