@@ -1,6 +1,6 @@
 ALTER VIEW vCars
 AS
-SELECT O.FIRST_NAME AS »Ãﬂ, O.LAST_NAME AS ‘¿Ã»À»ﬂ, B.[NAME] AS Ã¿– ¿, M.[NAME] AS ÃŒƒ≈À‹
+SELECT O.FIRST_NAME AS –ò–ú–Ø, O.LAST_NAME AS –§–ê–ú–ò–õ–ò–Ø, B.[NAME] AS –ú–ê–†–ö–ê, M.[NAME] AS –ú–û–î–ï–õ–¨
 FROM CAR AS C
 LEFT JOIN [OWNER] AS O
 ON C.ID_OWNER=O.ID

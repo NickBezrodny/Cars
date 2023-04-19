@@ -1,6 +1,6 @@
 CREATE Trigger ddlt_PreventDDLDropTableON DATABASE FOR DROP_TABLE
 AS
- RAISERROR (N'Попытка удаления таблицы!', 10, 1);
+ RAISERROR (N'РџРѕРїС‹С‚РєР° СѓРґР°Р»РµРЅРёСЏ С‚Р°Р±Р»РёС†С‹!', 10, 1);
  ROLLBACK;
 
  DROP Table CAR;

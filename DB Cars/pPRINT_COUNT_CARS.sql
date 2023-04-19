@@ -8,8 +8,8 @@ BEGIN
 		FROM dbo.Car
 		WHERE ID_OWNER = @Avaible);
 	IF @S = 0
-		PRINT N'У человека с идентификатором ' + @T + N' нет автомобилей(-я)'
-	ELSE PRINT N'У человека с идентификатором ' + @T + N' ' + CAST(@s AS NVARCHAR(10)) + N' автомобилей'
+		PRINT N'РЈ С‡РµР»РѕРІРµРєР° СЃ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј ' + @T + N' РЅРµС‚ Р°РІС‚РѕРјРѕР±РёР»РµР№(-СЏ)'
+	ELSE PRINT N'РЈ С‡РµР»РѕРІРµРєР° СЃ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј ' + @T + N' ' + CAST(@s AS NVARCHAR(10)) + N' Р°РІС‚РѕРјРѕР±РёР»РµР№'
 END;
 
 EXEC pPrintCountCars @ID_OWNER=108;

@@ -1,6 +1,6 @@
 CREATE Trigger ddlt_PreventDDLCreateTableON DATABASE FOR CREATE_TABLE
 AS
- RAISERROR (N'Попытка создания таблицы!', 10, 1);
+ RAISERROR (N'РџРѕРїС‹С‚РєР° СЃРѕР·РґР°РЅРёСЏ С‚Р°Р±Р»РёС†С‹!', 10, 1);
  ROLLBACK;
 
  CREATE Table RUN(
