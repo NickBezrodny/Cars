@@ -1,0 +1,18 @@
+CREATE FUNCTION fCountCars (@ID_OWNER INT)
+RETURNS INT
+AS
+BEGIN 
+	DECLARE @Avaible INT = @ID_OWNER
+	DECLARE @s INT
+	SELECT @s = Count(ID)
+	FROM dbo.Car
+	WHERE ID_OWNER = @Avaible
+	RETURN @s
+END;
+
+DECLARE @OWNER INT = 108;
+SELECT @OWNER AS N'OWNER';
+SELECT dbo.fCountCars(@OWNER) AS N'count of car';
+
+
+
