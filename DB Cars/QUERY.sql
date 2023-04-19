@@ -1,64 +1,64 @@
---1. Показать список всех автомобилей, отсортированных по мощности в порядке убывания. 
+--1. РџРѕРєР°Р·Р°С‚СЊ СЃРїРёСЃРѕРє РІСЃРµС… Р°РІС‚РѕРјРѕР±РёР»РµР№, РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹С… РїРѕ РјРѕС‰РЅРѕСЃС‚Рё РІ РїРѕСЂСЏРґРєРµ СѓР±С‹РІР°РЅРёСЏ.
 
-SELECT P.QUANTITY AS МОЩНОСТЬ, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+SELECT P.QUANTITY AS РњРћР©РќРћРЎРўР¬, B.[NAME] AS РњРђР РљРђ, M.[NAME] AS РњРћР”Р•Р›Р¬
 FROM CAR AS C
 LEFT JOIN [POWER] AS P
 ON C.ID_POWER=P.ID
-LEFT JOIN MODEL AS M
+RIGHT JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID
 ORDER BY P.QUANTITY DESC;
 
---2. Показать список всех автомобилей и их владельцев. 
+--2. РџРѕРєР°Р·Р°С‚СЊ СЃРїРёСЃРѕРє РІСЃРµС… Р°РІС‚РѕРјРѕР±РёР»РµР№ Рё РёС… РІР»Р°РґРµР»СЊС†РµРІ.
 
-SELECT O.FIRST_NAME AS ИМЯ, O.LAST_NAME AS ФАМИЛИЯ, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+SELECT O.FIRST_NAME AS РРњРЇ, O.LAST_NAME AS Р¤РђРњРР›РРЇ, B.[NAME] AS РњРђР РљРђ, M.[NAME] AS РњРћР”Р•Р›Р¬
 FROM CAR AS C
 LEFT JOIN [OWNER] AS O
 ON C.ID_OWNER=O.ID
-LEFT JOIN MODEL AS M
+RIGHT JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID;
 
---3. Показать три самых популярных марки автомобилей.
+--3. РџРѕРєР°Р·Р°С‚СЊ С‚СЂРё СЃР°РјС‹С… РїРѕРїСѓР»СЏСЂРЅС‹С… РјР°СЂРєРё Р°РІС‚РѕРјРѕР±РёР»РµР№.
 
-SELECT TOP 3 B.[NAME] AS МАРКА, COUNT(C.ID) AS КОЛИЧЕСТВО
+SELECT TOP 3 B.[NAME] AS РњРђР РљРђ, COUNT(C.ID) AS РљРћР›РР§Р•РЎРўР’Рћ
 FROM CAR AS C
 INNER JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID
 GROUP BY B.[NAME] 
 ORDER BY COUNT(C.ID) DESC;
 
---4. Показать владельцев и количество их автомобилей.
+--4. РџРѕРєР°Р·Р°С‚СЊ РІР»Р°РґРµР»СЊС†РµРІ Рё РєРѕР»РёС‡РµСЃС‚РІРѕ РёС… Р°РІС‚РѕРјРѕР±РёР»РµР№.
 
-SELECT O.LAST_NAME AS ФАМИЛИЯ, O.FIRST_NAME AS ИМЯ, COUNT(C.ID) AS КОЛИЧЕСТВО
+SELECT O.LAST_NAME AS Р¤РђРњРР›РРЇ, O.FIRST_NAME AS РРњРЇ, COUNT(C.ID) AS РљРћР›РР§Р•РЎРўР’Рћ
 FROM CAR AS C
 INNER JOIN [OWNER] AS O
 ON C.ID_OWNER=O.ID
 GROUP BY O.LAST_NAME, O.FIRST_NAME
 ORDER BY O.LAST_NAME ASC;
 
---5. Какие автомобили были выпущены в 2021 году?
+--5. РљР°РєРёРµ Р°РІС‚РѕРјРѕР±РёР»Рё Р±С‹Р»Рё РІС‹РїСѓС‰РµРЅС‹ РІ 2021 РіРѕРґСѓ?
 
-SELECT B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ, C.DATE_RELEASE AS ДАТА_ВЫПУСКА
+SELECT B.[NAME] AS РњРђР РљРђ, M.[NAME] AS РњРћР”Р•Р›Р¬, C.DATE_RELEASE AS Р”РђРўРђ_Р’Р«РџРЈРЎРљРђ
 FROM CAR AS C
-LEFT JOIN MODEL AS M
+RIGHT JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID
 WHERE C.DATE_RELEASE LIKE '%2021%';
 
---6. Показать все автомобили и их параметры, сортируя их по дате выпуска.
+--6. РџРѕРєР°Р·Р°С‚СЊ РІСЃРµ Р°РІС‚РѕРјРѕР±РёР»Рё Рё РёС… РїР°СЂР°РјРµС‚СЂС‹, СЃРѕСЂС‚РёСЂСѓСЏ РёС… РїРѕ РґР°С‚Рµ РІС‹РїСѓСЃРєР°.
 
-SELECT C.DATE_RELEASE AS ДАТА_ВЫПУСКА, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ, 
-	P.[QUANTITY] AS МОЩНОСТЬ, CL.[NAME] AS ЦВЕТ, CN.[NAME] AS СТРАНА_ПРОИЗВОДСТВА
+SELECT C.DATE_RELEASE AS Р”РђРўРђ_Р’Р«РџРЈРЎРљРђ, B.[NAME] AS РњРђР РљРђ, M.[NAME] AS РњРћР”Р•Р›Р¬, 
+	P.[QUANTITY] AS РњРћР©РќРћРЎРўР¬, CL.[NAME] AS Р¦Р’Р•Рў, CN.[NAME] AS РЎРўР РђРќРђ_РџР РћРР—Р’РћР”РЎРўР’Рђ
 FROM CAR AS C
-LEFT JOIN MODEL AS M
+RIGHT JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID
 INNER JOIN COLOR AS CL
 ON C.ID_COLOR=CL.ID
@@ -68,25 +68,25 @@ INNER JOIN [POWER] AS P
 ON C.ID_POWER=P.ID
 ORDER BY C.DATE_RELEASE DESC;
 
---7. Показать все автомобили красного цвета с указанием марки и модели.
+--7. РџРѕРєР°Р·Р°С‚СЊ РІСЃРµ Р°РІС‚РѕРјРѕР±РёР»Рё РєСЂР°СЃРЅРѕРіРѕ С†РІРµС‚Р° СЃ СѓРєР°Р·Р°РЅРёРµРј РјР°СЂРєРё Рё РјРѕРґРµР»Рё.
 
-SELECT B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+SELECT B.[NAME] AS РњРђР РљРђ, M.[NAME] AS РњРћР”Р•Р›Р¬
 FROM CAR AS C
-LEFT JOIN MODEL AS M
+RIGHT JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID
 INNER JOIN COLOR AS CL
 ON C.ID_COLOR=CL.ID
 WHERE CL.[NAME]  ='Red';
 
---8. Показать все автомобили с одинаковой мощностью.
+--8. РџРѕРєР°Р·Р°С‚СЊ РІСЃРµ Р°РІС‚РѕРјРѕР±РёР»Рё СЃ РѕРґРёРЅР°РєРѕРІРѕР№ РјРѕС‰РЅРѕСЃС‚СЊСЋ.
 
-SELECT C.ID, P.QUANTITY AS МОЩНОСТЬ, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+SELECT C.ID, P.QUANTITY AS РњРћР©РќРћРЎРўР¬, B.[NAME] AS РњРђР РљРђ, M.[NAME] AS РњРћР”Р•Р›Р¬
 FROM CAR AS C
-LEFT JOIN MODEL AS M
+RIGHT JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID
 INNER JOIN [POWER] AS P
 ON C.ID_POWER = P.ID
@@ -100,14 +100,14 @@ WHERE P.QUANTITY = ANY
 	HAVING COUNT(C.ID)>1
   );
 
---9. Показать все автомобили синего цвета произведенные в Корее и Франции.
+--9. РџРѕРєР°Р·Р°С‚СЊ РІСЃРµ Р°РІС‚РѕРјРѕР±РёР»Рё СЃРёРЅРµРіРѕ С†РІРµС‚Р° РїСЂРѕРёР·РІРµРґРµРЅРЅС‹Рµ РІ РљРѕСЂРµРµ Рё Р¤СЂР°РЅС†РёРё.
 
-SELECT B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ, CL.[NAME] AS ЦВЕТ, 
-	   CN.[NAME] AS СТРАНА_ПРОИЗВОДСТВА
+SELECT B.[NAME] AS РњРђР РљРђ, M.[NAME] AS РњРћР”Р•Р›Р¬, CL.[NAME] AS Р¦Р’Р•Рў, 
+	   CN.[NAME] AS РЎРўР РђРќРђ_РџР РћРР—Р’РћР”РЎРўР’Рђ
 FROM CAR AS C
-LEFT JOIN MODEL AS M
+RIGHT JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID
 INNER JOIN COLOR AS CL
 ON C.ID_COLOR=CL.ID
@@ -115,13 +115,13 @@ INNER JOIN COUNTRY AS CN
 ON C.ID_COUNTRY=CN.ID
 WHERE CL.[NAME]  ='Blue' AND (CN.[NAME] = 'France' OR CN.[NAME] = 'Korea');
 
---10. Показать самую молодую машину и самую старую.
+--10. РџРѕРєР°Р·Р°С‚СЊ СЃР°РјСѓСЋ РјРѕР»РѕРґСѓСЋ РјР°С€РёРЅСѓ Рё СЃР°РјСѓСЋ СЃС‚Р°СЂСѓСЋ.
 
-SELECT C.ID, DATE_RELEASE AS ДАТА_ВЫПУСКА, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+SELECT C.ID, DATE_RELEASE AS Р”РђРўРђ_Р’Р«РџРЈРЎРљРђ, B.[NAME] AS РњРђР РљРђ, M.[NAME] AS РњРћР”Р•Р›Р¬
 FROM CAR AS C
-LEFT JOIN MODEL AS M
+RIGHT JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID
 WHERE DATE_RELEASE =
 (
@@ -129,15 +129,14 @@ WHERE DATE_RELEASE =
 	FROM CAR
 );
 
-SELECT C.ID, DATE_RELEASE AS ДАТА_ВЫПУСКА, B.[NAME] AS МАРКА, M.[NAME] AS МОДЕЛЬ
+SELECT C.ID, DATE_RELEASE AS Р”РђРўРђ_Р’Р«РџРЈРЎРљРђ, B.[NAME] AS РњРђР РљРђ, M.[NAME] AS РњРћР”Р•Р›Р¬
 FROM CAR AS C
-LEFT JOIN MODEL AS M
+RIGHT JOIN MODEL AS M
 ON C.ID_MODEL=M.ID
-LEFT JOIN BRAND AS B
+RIGHT JOIN BRAND AS B
 ON M.ID_BRAND=B.ID
 WHERE DATE_RELEASE =
 (
 	SELECT MIN(DATE_RELEASE)
 	FROM CAR
 );
-
